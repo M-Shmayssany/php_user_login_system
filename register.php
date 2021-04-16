@@ -96,8 +96,8 @@ if (isset($_POST['submit']))
             $sql = "INSERT INTO users (`firstname`, `lastname`, `email`, `password`) VALUES ('$firstName', '$familyName', '$email', '$hash_password' );";
             $conn->exec($sql);
             $sql_massage = "<span style='background-color: #7fc781;'>New record created successfully</span>";
-            $_SESSION['firstname'] = $firstname;
-            $_SESSION['lastname'] = $lastname;
+            $_SESSION['firstname'] = $firstName;
+            $_SESSION['lastname'] = $familyName;
             $_SESSION['email'] = $email;
         } catch(PDOException $e) {
             $sql_massage = "<span>" . $sql . "<br>" . $e->getMessage() . "</span>";
