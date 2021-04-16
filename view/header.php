@@ -1,4 +1,5 @@
 <?php
+    // Starting the session
     session_start();
 ?>
 <!DOCTYPE html>
@@ -25,6 +26,7 @@
                 <a class="nav-link" href="/register.php" tabindex="-1" aria-disabled="true">Register</a>
             </li>
             <?php
+            //Check if there is a session
             if (isset($_SESSION['email']))
             {
             ?>

@@ -1,15 +1,23 @@
 <?php
-    include('./view/header.php');
+    include('./view/header.php'); // Include the headers
+
+    //Check if form is submited
     if (isset($_POST['submit']))
     {
+        // Import connection settings.
         include('./config/connection.php');
-        $submit = $_POST['submit'];
+
+        // Getting and sanitizing data from form
         $email = filter_var($_POST["Email"],FILTER_SANITIZE_EMAIL);
         $password = filter_var($_POST["password"], FILTER_SANITIZE_STRING);
+
+        // Declaring errors massages variables
         $email_err_message = "";
         $password_err_message = "";
         $sql_massage = "";
         $err_state = 0;
+
+        // Check if email if empty or valid format
         if (empty($email))
         {
             $email_err_message = "<span>Email address can't be empty!!</span>";
@@ -21,14 +29,17 @@
             $err_state++;
         }
 
+        // Check if password if empty
         if (empty($password))
         {
             $password_err_message = "<span>Password can't be empty!</span>";
             $err_state++;
         }
 
+        // Check error state if any
         if ($err_state == 0)
         {
+            // Check if email exist in database
             try {
                 $stmt = $conn->prepare('SELECT * FROM users WHERE email=? LIMIT 1');
                 $stmt->bindParam(1, $email, PDO::PARAM_STR);
@@ -40,17 +51,18 @@
                 }
                 else
                 {
+                    // If email exist get data
                     $firstname = $row['firstname'];
                     $lastname = $row['lastname'];
                     $hash_password = $row['password'];
                     
+                    // Check if password match
                     if (!password_verify($password, $hash_password))
                     {
                         $sql_massage = "<span>Incorrect password</span>";
                     }
                     else
                     {
-                        
                         $_SESSION['firstname'] = $firstname;
                         $_SESSION['lastname'] = $lastname;
                         $_SESSION['email'] = $email;
@@ -62,6 +74,7 @@
                 $err_state++;
             }
         }
+        // Close connection
         $conn = null;
     }
 ?>
